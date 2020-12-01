@@ -72,11 +72,25 @@ public class FadeData {
     /**
      * Game level
      */
-    private static final int[] LEVEL_TOTAL_TIME = new int[]{60, 45};
-    private static final int[] LEVEL_VIEW_TIME = new int[]{45, 60};
-    private static final int[] LEVEL_CARD_NUM = new int[]{8, 10};
+
+    /**
+     * 游戏每个关卡的总时间
+     */
+    private static final int[] LEVEL_TOTAL_TIME = new int[]{0, 60, 45};
+    /**
+     * 游戏每个关卡的观看时间
+     */
+    private static final int[] LEVEL_VIEW_TIME = new int[]{60, 45, 60};
+    /**
+     * 游戏每个关卡的显示的卡片数
+     */
+    private static final int[] LEVEL_CARD_NUM = new int[]{4, 8, 10};
     private static SparseArray<GameLevel> gameLevelSparseArray = new SparseArray<>();
 
+
+    /**
+     * 初始化游戏难度的数据
+     */
     public static void initGameLevels() {
         for (int i = 0; i < LEVEL_TOTAL_TIME.length; i++) {
             GameLevel gameLevel = new GameLevel();
@@ -91,6 +105,12 @@ public class FadeData {
         }
     }
 
+    /**
+     * 根据游戏级别获取每个关卡对应的游戏难度数据
+     *
+     * @param level
+     * @return
+     */
     public static GameLevel getGameLevelByLevel(int level) {
         return gameLevelSparseArray.get(level);
     }

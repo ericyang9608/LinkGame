@@ -22,5 +22,12 @@
         android:text="Two level"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/easy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Easy"
+        android:textAllCaps="false" />
+
 
 </LinearLayout>

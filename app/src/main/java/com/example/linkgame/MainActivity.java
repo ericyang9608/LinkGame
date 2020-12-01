@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         time = (TextView) findViewById(R.id.time);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
+        //根据传入的关卡级别获取对应的关卡难度数据
         int level = 1;
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(GAME_LEVEL)) {
@@ -59,15 +60,16 @@ public class MainActivity extends AppCompatActivity {
             FadeData.initGameLevels();
             gameLevel = FadeData.getGameLevelByLevel(level);
         }
+        //获取传入的游戏数据
         if (intent != null && intent.hasExtra(GAME_DATA)) {
             dataList = intent.getParcelableArrayListExtra(GAME_DATA);
         }
-
+        //填充游戏数据
         linkAdapter = new LinkAdapter(dataList);
         linkAdapter.setOnItemClickListener(new LinkAdapter.OnItemClickListener<LinkItem>() {
             @Override
             public void onItemClick(int position, LinkItem linkItem) {
-
+                //每个卡片的点击事件
                 if (preLinkItem == null) {
                     //两个不一样，重新填充数据
                     preLinkItem = linkItem;
@@ -88,30 +90,34 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(linkAdapter);
 
-        long intervalTime = gameLevel.getIntervalTime();
-        countDownTimerSuspended = new CountDownTimerSuspended(gameLevel.getTotalTime() * intervalTime, intervalTime) {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onTick(long millisUntilFinished) {
-                time.setText(String.format("The left time: %d s", millisUntilFinished / 1000));
-            }
+        //关卡级别大于1才开始倒计时
+        if (level > 1) {
+            time.setVisibility(View.VISIBLE);
+            long intervalTime = gameLevel.getIntervalTime();
+            countDownTimerSuspended = new CountDownTimerSuspended(gameLevel.getTotalTime() * intervalTime, intervalTime) {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    time.setText(String.format("The left time: %d s", millisUntilFinished / 1000));
+                }
 
-            @Override
-            public void onFinish() {
-                if (countDownTimerSuspended != null) {
-                    countDownTimerSuspended.cancel();
+                @Override
+                public void onFinish() {
+                    if (countDownTimerSuspended != null) {
+                        countDownTimerSuspended.cancel();
+                    }
+                    if (clearedKeyList.size() == gameLevel.getCardNum()) {
+                        // TODO: the gamer win
+                        Toast.makeText(MainActivity.this, "gamer win", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // TODO: the gamer failed
+                        Toast.makeText(MainActivity.this, "game over", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                if (clearedKeyList.size() == gameLevel.getCardNum()) {
-                    // TODO: the gamer win
-                    Toast.makeText(MainActivity.this, "gamer win", Toast.LENGTH_SHORT).show();
-                } else {
-                    // TODO: the gamer failed
-                    Toast.makeText(MainActivity.this, "game over", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-        //Start timer
-        countDownTimerSuspended.start();
+            };
+            //Start timer
+            countDownTimerSuspended.start();
+        }
     }
 
 
@@ -139,7 +145,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * 获取每次剩余的卡片数据（需要展示的）
+     */
     private void getRemainData() {
         for (int i = 0; i < dataList.size(); i++) {
             LinkItem linkItem = dataList.get(i);

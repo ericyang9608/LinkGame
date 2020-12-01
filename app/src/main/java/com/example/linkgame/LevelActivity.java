@@ -20,6 +20,11 @@ public class LevelActivity extends AppCompatActivity implements View.OnClickList
      */
     private Button second;
 
+    /**
+     * One level
+     */
+    private Button easy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +33,8 @@ public class LevelActivity extends AppCompatActivity implements View.OnClickList
         first.setOnClickListener(this);
         second = (Button) findViewById(R.id.second);
         second.setOnClickListener(this);
+        easy = (Button) findViewById(R.id.easy);
+        easy.setOnClickListener(this);
     }
 
     @Override
@@ -38,10 +45,14 @@ public class LevelActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.first:
                 // TODO:   The actual action should be to take the set of gamelevel
+                intent.putExtra(GAME_LEVEL, 2);
+                break;
+            case R.id.easy:
+                // TODO:   The actual action should be to take the set of gamelevel
                 intent.putExtra(GAME_LEVEL, 1);
                 break;
             case R.id.second:
-                intent.putExtra(GAME_LEVEL, 2);
+                intent.putExtra(GAME_LEVEL, 3);
                 break;
         }
         startActivity(intent);

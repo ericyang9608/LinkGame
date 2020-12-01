@@ -52,13 +52,15 @@ public class ViewDataActivity extends AppCompatActivity {
             gameLevel = FadeData.getGameLevelByLevel(level);
         }
 
+        //设置数据源
         final ArrayList<LinkItem> dataList = FadeData.getData(gameLevel.getCardNum());
         viewDataAdapter = new ViewDataAdapter(dataList);
         recyclerView.setAdapter(viewDataAdapter);
 
+        //开启定时
         final int finalLevel = level;
         countDownTimerSuspended = new CountDownTimerSuspended(gameLevel.getViewTime() * gameLevel.getIntervalTime(), gameLevel.getIntervalTime()) {
-//        countDownTimerSuspended = new CountDownTimerSuspended(3 * gameLevel.getIntervalTime(), gameLevel.getIntervalTime()) {
+            //        countDownTimerSuspended = new CountDownTimerSuspended(3 * gameLevel.getIntervalTime(), gameLevel.getIntervalTime()) {
             @SuppressLint({"SetTextI18n", "DefaultLocale"})
             @Override
             public void onTick(long millisUntilFinished) {

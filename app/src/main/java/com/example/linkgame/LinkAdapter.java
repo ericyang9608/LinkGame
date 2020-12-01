@@ -80,6 +80,7 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.ItemViewHolder
             holder.itemRoot.setVisibility(View.GONE);
             return;
         }
+        //设置翻转动画效果
         holder.frontImg.setImageResource(R.mipmap.front);
         holder.frontRoot.clearAnimation();
         holder.reverseRoot.clearAnimation();
